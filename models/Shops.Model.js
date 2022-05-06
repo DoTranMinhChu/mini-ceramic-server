@@ -4,26 +4,28 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class Orders extends Model {
+    class Shops extends Model {
         static associate(models) {
-
+            Shops.belongsTo(models.Orders, { foreignKey: '_id' });
+            Shops.belongsTo(models.Products, { foreignKey: '_id' });
         }
     }
-    Orders.init({
+    Shops.init({
         _id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER
         },
-        total: {
+        name: {
             allowNull: false,
-            type: DataTypes.FLOAT,
-            validate: {
-                min: 0
-            }
+            type: DataTypes.STRING
         },
-        account_id: {
+        description: {
+            allowNull: false,
+            type: DataTypes.TEXT
+        },
+        owner_id: {
             allowNull: false,
             type: DataTypes.INTEGER,
             references: {
@@ -33,31 +35,15 @@ module.exports = (sequelize, DataTypes) => {
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
-        shop_id: {
-            allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'Shops',
-                key: '_id'
-            },
-            onUpdate: 'cascade',
-            onDelete: 'cascade'
-        },
-
-        orderDate: {
+        address: {
             allowNull: true,
-            type: DataTypes.DATE
+            type: DataTypes.TEXT
         },
-        shipDate: {
-            allowNull: true,
-            type: DataTypes.DATE
-        },
-
         status_id: {
             allowNull: false,
             type: DataTypes.INTEGER,
             references: {
-                model: 'Orderstatuses',
+                model: 'ShopStatuses',
                 key: '_id'
             },
             onUpdate: 'cascade',
@@ -73,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'Orders'
+        modelName: 'Shops'
     })
-    return Orders;
+    return Shops;
 }

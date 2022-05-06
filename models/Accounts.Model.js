@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             Accounts.hasOne(models.AccountRoles, { foreignKey: '_id', sourceKey: 'role_id' });
             Accounts.hasOne(models.AccountStatuses, { foreignKey: '_id', sourceKey: 'status_id' });
+            
+            Accounts.belongsTo(models.Orders, { foreignKey: '_id', sourceKey: 'account_id' });
 
 
         }

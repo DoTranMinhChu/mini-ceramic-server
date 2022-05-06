@@ -3,12 +3,12 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class OrderStatuses extends Model {
+    class ProductCategories extends Model {
         static associate(models) {
-            // OrderStatuses.belongsTo(models.Accounts, { foreignKey: '_id' });
+            ProductCategories.belongsTo(models.Products, { foreignKey: '_id' });
         }
     }
-    OrderStatuses.init({
+    ProductCategories.init({
         _id: {
             allowNull: false,
             autoIncrement: true,
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }, {
         sequelize,
-        modelName: 'OrderStatuses',
+        modelName: 'ProductCategories',
     });
-    return OrderStatuses;
+    return ProductCategories;
 };

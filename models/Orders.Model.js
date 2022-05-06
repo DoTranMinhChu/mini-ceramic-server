@@ -4,27 +4,28 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class Shops extends Model {
+    class Orders extends Model {
         static associate(models) {
-
+            Orders.hasOne(models.Accounts,{foreignKey:'_id',sourceKey:'account_id'})
+            Orders.hasOne(models.Shops,{foreignKey:'_id',sourceKey:'shop_id'})
+            Orders.hasOne(models.OrderStatuses,{foreignKey:'_id',sourceKey:'status_id'})
         }
     }
-    Shops.init({
+    Orders.init({
         _id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER
         },
-        name: {
+        total: {
             allowNull: false,
-            type: DataTypes.STRING
+            type: DataTypes.FLOAT,
+            validate: {
+                min: 0
+            }
         },
-        description: {
-            allowNull: false,
-            type: DataTypes.TEXT
-        },
-        owner_id: {
+        account_id: {
             allowNull: false,
             type: DataTypes.INTEGER,
             references: {
@@ -34,15 +35,31 @@ module.exports = (sequelize, DataTypes) => {
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
-        address: {
-            allowNull: true,
-            type: DataTypes.TEXT
+        shop_id: {
+            allowNull: false,
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Shops',
+                key: '_id'
+            },
+            onUpdate: 'cascade',
+            onDelete: 'cascade'
         },
+
+        orderDate: {
+            allowNull: true,
+            type: DataTypes.DATE
+        },
+        shipDate: {
+            allowNull: true,
+            type: DataTypes.DATE
+        },
+
         status_id: {
             allowNull: false,
             type: DataTypes.INTEGER,
             references: {
-                model: 'ShopStatuses',
+                model: 'Orderstatuses',
                 key: '_id'
             },
             onUpdate: 'cascade',
@@ -58,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'Shops'
+        modelName: 'Orders'
     })
-    return Shops;
+    return Orders;
 }

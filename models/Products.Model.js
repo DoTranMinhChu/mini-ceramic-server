@@ -6,7 +6,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Products extends Model {
         static associate(models) {
-
+            Products.hasOne(models.ProductCategories,{foreignKey:'_id',sourceKey:'category_id'})
+            Products.hasOne(models.ProductStatuses,{foreignKey:'_id',sourceKey:'status_id'})
+            Products.hasOne(models.Shops,{foreignKey:'_id',sourceKey:'shop_id'})
         }
     }
     Products.init({
