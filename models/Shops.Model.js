@@ -1,4 +1,8 @@
 'use strict'
+
+const { v4: uuidv4 } = require('uuid');
+
+
 const {
     Model
 } = require('sequelize');
@@ -6,16 +10,17 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Shops extends Model {
         static associate(models) {
-            Shops.belongsTo(models.Orders, { foreignKey: '_id' });
-            Shops.belongsTo(models.Products, { foreignKey: '_id' });
+            Shops.belongsTo(models.Orders, { foreignKey: 'id' });
+            Shops.belongsTo(models.Products, { foreignKey: 'id' });
         }
     }
     Shops.init({
-        _id: {
+        id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
         name: {
             allowNull: false,
@@ -25,12 +30,12 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.TEXT
         },
-        owner_id: {
+        ownerId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Accounts',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
@@ -39,13 +44,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             type: DataTypes.TEXT
         },
-        status_id: {
+        status: {
             allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'ShopStatuses',
-                key: '_id'
-            },
+            type: DataTypes.ENUM("Open", "Close", "Delete"),
+            defaultValue: "Open",
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
@@ -61,5 +63,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Shops'
     })
+    Shops.beforeCreate(user => user.id = uuidv4())
     return Shops;
 }

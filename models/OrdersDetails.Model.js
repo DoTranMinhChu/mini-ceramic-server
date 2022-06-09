@@ -1,4 +1,8 @@
 'use strict'
+
+const { v4: uuidv4 } = require('uuid');
+
+
 const {
     Model
 } = require('sequelize');
@@ -10,18 +14,19 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     OrderDetails.init({
-        _id: {
+        id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
-        product_id: {
+        productId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Products',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
@@ -33,24 +38,21 @@ module.exports = (sequelize, DataTypes) => {
                 min: 1
             }
         },
-        order_id: {
+        orderId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Orders',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
 
-        status_id: {
+        status: {
             allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'OrderDetailstatuses',
-                key: '_id'
-            },
+            type: DataTypes.ENUM("Processing", "Done", "Cancelled"),
+            defaultValue: "Processing",
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
@@ -66,5 +68,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'OrderDetails'
     })
+    OrderDetails.beforeCreate(user => user.id = uuidv4())
     return OrderDetails;
 }

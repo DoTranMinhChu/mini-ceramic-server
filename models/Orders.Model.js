@@ -1,4 +1,7 @@
 'use strict'
+
+const { v4: uuidv4 } = require('uuid');
+
 const {
     Model
 } = require('sequelize');
@@ -6,17 +9,17 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Orders extends Model {
         static associate(models) {
-            Orders.hasOne(models.Accounts,{foreignKey:'_id',sourceKey:'account_id'})
-            Orders.hasOne(models.Shops,{foreignKey:'_id',sourceKey:'shop_id'})
-            Orders.hasOne(models.OrderStatuses,{foreignKey:'_id',sourceKey:'status_id'})
+            Orders.hasOne(models.Accounts, { foreignKey: 'id', sourceKey: 'accountId' })
+            Orders.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId' })
         }
     }
     Orders.init({
-        _id: {
+        id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
         total: {
             allowNull: false,
@@ -25,22 +28,22 @@ module.exports = (sequelize, DataTypes) => {
                 min: 0
             }
         },
-        account_id: {
+        accountId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Accounts',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
-        shop_id: {
+        shopId: {
             allowNull: false,
             type: DataTypes.INTEGER,
             references: {
                 model: 'Shops',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
@@ -55,13 +58,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE
         },
 
-        status_id: {
+        status: {
             allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'Orderstatuses',
-                key: '_id'
-            },
+            type: DataTypes.ENUM("Processing", "Shipped", "Cancelled"),
+            defaultValue: "Processing",
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
@@ -77,5 +77,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Orders'
     })
+    Orders.beforeCreate(user => user.id = uuidv4())
     return Orders;
 }

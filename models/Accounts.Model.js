@@ -1,4 +1,8 @@
 'use strict';
+
+const { v4: uuidv4 } = require('uuid');
+
+
 const {
     Model
 } = require('sequelize');
@@ -10,20 +14,17 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            Accounts.hasOne(models.AccountRoles, { foreignKey: '_id', sourceKey: 'role_id' });
-            Accounts.hasOne(models.AccountStatuses, { foreignKey: '_id', sourceKey: 'status_id' });
-            
-            Accounts.belongsTo(models.Orders, { foreignKey: '_id', sourceKey: 'account_id' });
+            Accounts.belongsTo(models.Orders, { foreignKey: 'id', sourceKey: 'accountid' });
 
 
         }
     }
     Accounts.init({
-        _id: {
+        id: {
             allowNull: false,
-            autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
         username: {
             allowNull: false,
@@ -58,23 +59,17 @@ module.exports = (sequelize, DataTypes) => {
                 min: 0
             }
         },
-        role_id: {
+        role: {
             allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'AccountRoles',
-                key: '_id'
-            },
+            type: DataTypes.ENUM("Admin", "User"),
+            defaultValue: "User",
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
-        status_id: {
+        status: {
             allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'AccountStatuses',
-                key: '_id'
-            },
+            type: DataTypes.ENUM("Active", "UnActive", "Delete"),
+            defaultValue: "Active",
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
@@ -91,5 +86,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Accounts',
     });
+    Accounts.beforeCreate(user => user.id = uuidv4())
     return Accounts;
 };

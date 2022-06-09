@@ -1,19 +1,24 @@
 'use strict';
+
+const { v4: uuidv4 } = require('uuid');
+
+
 const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class ProductCategories extends Model {
         static associate(models) {
-            ProductCategories.belongsTo(models.Products, { foreignKey: '_id' });
+            ProductCategories.belongsTo(models.Products, { foreignKey: 'id' });
         }
     }
     ProductCategories.init({
-        _id: {
+        id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
         name: {
             allowNull: false,
@@ -32,5 +37,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'ProductCategories',
     });
+    ProductCategories.beforeCreate(user => user.id = uuidv4())
     return ProductCategories;
 };

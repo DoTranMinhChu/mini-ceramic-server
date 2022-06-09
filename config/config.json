@@ -19,5 +19,6 @@
     "database": "mini-ceramic",
     "host": "127.0.0.1",
     "dialect": "postgres"
-  }
+  },
+  "secret": "Minh Chu"
 }

@@ -1,4 +1,8 @@
 'use strict'
+
+const { v4: uuidv4 } = require('uuid');
+
+
 const {
     Model
 } = require('sequelize');
@@ -6,17 +10,17 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Products extends Model {
         static associate(models) {
-            Products.hasOne(models.ProductCategories,{foreignKey:'_id',sourceKey:'category_id'})
-            Products.hasOne(models.ProductStatuses,{foreignKey:'_id',sourceKey:'status_id'})
-            Products.hasOne(models.Shops,{foreignKey:'_id',sourceKey:'shop_id'})
+            Products.hasOne(models.ProductCategories, { foreignKey: 'id', sourceKey: 'categoryId' })
+            Products.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId' })
         }
     }
     Products.init({
-        _id: {
+        id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: DataTypes.INTEGER
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
         },
         name: {
             allowNull: false,
@@ -39,34 +43,31 @@ module.exports = (sequelize, DataTypes) => {
         },
 
 
-        category_id: {
+        categoryId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'ProductCategories',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
 
-        shop_id: {
+        shopId: {
             allowNull: false,
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             references: {
                 model: 'Shops',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
-        status_id: {
+        status: {
             allowNull: false,
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'ProductStatuses',
-                key: '_id'
-            },
+            type: DataTypes.ENUM("Active", "Out of stock", "Hidden", "Delete"),
+            defaultValue: "Active",
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
@@ -82,5 +83,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Products'
     })
+    Products.beforeCreate(user => user.id = uuidv4())
     return Products;
 }
