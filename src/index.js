@@ -8,7 +8,6 @@ const app = express();
 const AccountsRouter = require('./routers/accounts.router')
 const OrdersRouter = require('./routers/orders.router')
 const ProductsRouter = require('./routers/products.router')
-const userRouter = require('./routers/users.router')
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -21,7 +20,6 @@ const PORT = process.env.PORT || 5000;
 app.use('/api', AccountsRouter)
 app.use('/api', OrdersRouter)
 app.use('/api', ProductsRouter)
-app.use('/api/user', userRouter);
 
 
 app.get('*', (req, res) => res.status(200).send({
