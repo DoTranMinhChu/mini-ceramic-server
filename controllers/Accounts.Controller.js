@@ -1,4 +1,5 @@
-const db = require('../models/index')
+const db = require('../models/index');
+const { httpRespone } = require('../response/http.response');
 const accountServices = require('../services/account.service')
 
 const getAccounts = async (req, res) => {
@@ -53,18 +54,15 @@ const getAccountsByRole_id = async (req, res) => {
 }
 
 const registerAccount = (req, res) => {
-    accountServices.createNewAccount(req.body);
+    const newAccount = accountServices.createNewAccount(req.body);
+    httpRespone(res, newAccount)
 }
 
-const loginAccount = (req, res) => {
-    console.log(req.body)
-    accountServices.loginAccount(req.body.username, req.body.password)
-        .then(data => {
-            res.status(201).json(data)
-        }).catch(err => {
-            res.status(400).json(err)
-
-        })
+const loginAccount = async (req, res) => {
+    const { username, password } = req.body;
+    const loginRequest = { username, password }
+    const loginResponse = await accountServices.loginAccount(loginRequest)
+    httpRespone(res, loginResponse)
 }
 
 module.exports = {

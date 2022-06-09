@@ -15,7 +15,6 @@ module.exports = {
 };
 
 async function authenticate({ username, password }) {
-    console.log({ username, password })
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
         const token = jwt.sign(
@@ -25,7 +24,6 @@ async function authenticate({ username, password }) {
                 iat: Math.floor(Date.now() / 1000) - 30,
                 exp: Math.floor(Date.now() / 1000) + (60),
             }, config.secret);
-        console.log('token : ', token);
         const { password, ...userWithoutPassword } = user;
         return {
             ...userWithoutPassword,

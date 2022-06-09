@@ -1,6 +1,5 @@
 const express = require('express');
 const userController = require('../controllers/users.controller');
-const Role = require('../_helpers/role');
 const router = express.Router();
 
 const authorize = require('../_helpers/authorize');

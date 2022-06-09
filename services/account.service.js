@@ -1,69 +1,51 @@
-const db = require("../models")
-const bcrypt = require('bcrypt')
+const db = require("../models");
+const bcrypt = require('bcrypt');
+const config = require('../config/config.json');
+const jwt = require('jsonwebtoken');
 
 const createNewAccount = async (data) => {
-    const password = await hasPassword(data.password);
+    const hasPassword = await hasPassword(data.password);
     const newAccount = await db.Accounts.create({
         username: data.username,
-        password: password,
+        password: hasPassword,
         fullName: data.fullName,
         avatar: data.avatar,
-        role_id: 1,
-        status_id: 1
     })
-    console.log(newAccount)
+    const { password, ...newAccountRespont } = newAccount.dataValues
+    return newAccountRespont;
 
 }
 
-const hasPassword = (password) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(password, salt);
-            resolve(hash)
-        } catch (err) {
-            reject(err);
+const hasPassword = async (password) => {
+    const salt = await bcrypt.genSaltSync(10);
+    const hash = await bcrypt.hashSync(password, salt);
+    return hash;
+}
+
+const loginAccount = async (loginRequest) => {
+    const account = await getAccountByUsername(loginRequest.username);
+    if (!account) {
+
+    }
+    const check = await bcrypt.compareSync(loginRequest.password, account.password);
+    if (!check) {
+
+    }
+    const { password, ...accountWithoutPassword } = account;
+    const accessToken = jwt.sign(
+        accountWithoutPassword,
+        config.secret,
+        {
+            expiresIn: '5m'
         }
-    })
+    );
+
+    return accessToken;
+
 }
 
-const loginAccount = (username, password) => {
-    return new Promise(async (resolve, reject) => {
-        getAccountByUsername(username)
-            .then(async account => {
-                try {
-                    const check = await bcrypt.compareSync(password, account.password);
-                    if (check) {
-                        resolve(account)
-                    } else {
-                        reject('Err password')
-                    }
-
-                } catch (err) {
-                    reject(err)
-                }
-            }).catch(err => {
-                reject(err)
-            })
-
-
-    })
-}
-
-const getAccountByUsername = (username) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const account = await db.Accounts.findOne({ where: { username: username } })
-            if (account != null) {
-                resolve(account)
-            } else {
-                reject('err username')
-            }
-
-        } catch (err) {
-            reject(err)
-        }
-    })
+const getAccountByUsername = async (username) => {
+    return (await db.Accounts.findOne({ where: { username: username } })).dataValues
 }
 
 module.exports = {

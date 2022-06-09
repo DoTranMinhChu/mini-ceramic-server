@@ -1,5 +1,6 @@
 const express = require('express');
 const AccountsController = require('../controllers/accounts.controller');
+const auth = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
  * /api/accounts:
  *   get:
  *     tags:
- *       name: Accounts
+ *       - Accounts
  *     description: Get all account 
  *     responses:
  *       200:
@@ -21,21 +22,17 @@ router.get('/accounts', AccountsController.getAccounts)
  * @swagger
  * /api/accounts/{_id}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     tags:
  *       - Accounts
- *     description: Get accounts by account _id
- *     parameters:
- *       - name: _id
- *         in: path
- *         description: Account _id
- *         required: true
- *         type: string
+ *     description: Get infomation account
  *     responses:
  *       200:
  *         description: Success
  * 
  */
-router.get('/accounts/:_id', AccountsController.getAccountByAccount_id)
+router.get('/accounts/info', auth, AccountsController.getAccountByAccount_id)
 
 /**
  * @swagger

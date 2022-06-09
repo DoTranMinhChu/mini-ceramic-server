@@ -20,7 +20,6 @@ const getOrders = async (req, res) => {
 
 const getOrderByOrder_id = async (req, res) => {
     const { _id } = req.params
-    console.log(req)
     const accounts = await db.Orders.findOne({
         where: {
             _id: _id
