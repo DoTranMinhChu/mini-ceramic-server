@@ -4,23 +4,10 @@ const auth = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
-/**
- * @swagger
- * /api/accounts:
- *   get:
- *     tags:
- *       - Accounts
- *     description: Get all account 
- *     responses:
- *       200:
- *         description: Success
- * 
- */
-router.get('/accounts', AccountsController.getAccounts)
 
 /**
  * @swagger
- * /api/accounts/{_id}:
+ * /api/accounts/info:
  *   get:
  *     security:
  *       - bearerAuth: []
@@ -32,27 +19,7 @@ router.get('/accounts', AccountsController.getAccounts)
  *         description: Success
  * 
  */
-router.get('/accounts/info', auth, AccountsController.getAccountByAccount_id)
-
-/**
- * @swagger
- * /api/accounts/{_id}:
- *   get:
- *     tags:
- *       - Accounts
- *     description: Get all accounts by role _id
- *     parameters:
- *       - name: _id
- *         in: path
- *         description: Role _id
- *         required: true
- *         type: string
- *     responses:
- *       200:
- *         description: Success
- * 
- */
-router.get('/accounts/role/:_id', AccountsController.getAccountsByRole_id)
+router.get('/accounts/info', auth, AccountsController.getAccountInfo)
 
 /**
  * @swagger

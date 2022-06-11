@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use('/api', AccountsRouter)
 app.use('/api', OrdersRouter)
-app.use('/api', ProductsRouter)
+app.use('/api', ProductsRouter) 
 
 
 app.get('*', (req, res) => res.status(200).send({

@@ -1,11 +1,8 @@
 'use strict';
 
 const { v4: uuidv4 } = require('uuid');
+const { Model } = require('sequelize');
 
-
-const {
-    Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class ProductCategories extends Model {
         static associate(models) {
@@ -23,19 +20,12 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             allowNull: false,
             type: DataTypes.STRING
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataTypes.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataTypes.DATE
         }
-
     }, {
         sequelize,
         modelName: 'ProductCategories',
+        createdAt: false,
+        updatedAt: false
     });
     ProductCategories.beforeCreate(user => user.id = uuidv4())
     return ProductCategories;

@@ -15,22 +15,22 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-            Token.belongsTo(models.Products, { foreignKey: '_id' });
+            Token.belongsTo(models.Products, { foreignKey: 'id' });
         }
     }
     Token.init({
-        _id: {
+        id: {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
             type: DataTypes.UUID
         },
-        user_id: {
+        userId: {
             allowNull: false,
             type: DataTypes.UUID,
             references: {
                 model: 'Accounts',
-                key: '_id'
+                key: 'id'
             },
             onUpdate: 'cascade',
             onDelete: 'cascade'
@@ -39,19 +39,16 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.STRING
         },
-        createdAt: {
+        expiresOn: {
             allowNull: false,
-            type: DataTypes.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataTypes.DATE
+            type: DataTypes.BIGINT
         }
-
     }, {
         sequelize,
         modelName: 'Tokens',
+        createdAt: false,
+        updatedAt: false
     });
-    Token.beforeCreate(user => user._id = uuidv4())
+    Token.beforeCreate(user => user.id = uuidv4())
     return Token;
 };

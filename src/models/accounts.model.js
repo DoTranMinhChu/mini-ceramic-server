@@ -3,9 +3,11 @@
 const { v4: uuidv4 } = require('uuid');
 
 
-const {
-    Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const { role, roleDefault } = require('../constant/role.enum');
+const { accountStatus, accountStatusDefault } = require('../constant/accountStatus.enum');
+
+
 module.exports = (sequelize, DataTypes) => {
     class Accounts extends Model {
         /**
@@ -61,31 +63,26 @@ module.exports = (sequelize, DataTypes) => {
         },
         role: {
             allowNull: false,
-            type: DataTypes.ENUM("Admin", "User"),
-            defaultValue: "User",
+            type: DataTypes.ENUM(role),
+            defaultValue: roleDefault,
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
         status: {
             allowNull: false,
-            type: DataTypes.ENUM("Active", "UnActive", "Delete"),
-            defaultValue: "Active",
+            type: DataTypes.ENUM(accountStatus),
+            defaultValue: accountStatusDefault,
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
-        createdAt: {
-            allowNull: false,
-            type: DataTypes.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataTypes.DATE
-        }
-
     }, {
         sequelize,
         modelName: 'Accounts',
-    });
+        timestamps: false,
+        createdAt: false,
+        updatedAt: false
+    }
+    );
     Accounts.beforeCreate(user => user.id = uuidv4())
     return Accounts;
 };

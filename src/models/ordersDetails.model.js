@@ -1,11 +1,8 @@
 'use strict'
 
 const { v4: uuidv4 } = require('uuid');
-
-
-const {
-    Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const { orderDetailStatus, orderDetailStatusDefault } = require('../constant/orderDetailStatus.enum');
 
 module.exports = (sequelize, DataTypes) => {
     class OrderDetails extends Model {
@@ -51,22 +48,16 @@ module.exports = (sequelize, DataTypes) => {
 
         status: {
             allowNull: false,
-            type: DataTypes.ENUM("Processing", "Done", "Cancelled"),
-            defaultValue: "Processing",
+            type: DataTypes.ENUM(orderDetailStatus),
+            defaultValue: orderDetailStatusDefault,
             onUpdate: 'cascade',
             onDelete: 'cascade'
-        },
-        createdAt: {
-            allowNull: false,
-            type: DataTypes.DATE
-        },
-        updatedAt: {
-            allowNull: false,
-            type: DataTypes.DATE
         }
     }, {
         sequelize,
-        modelName: 'OrderDetails'
+        modelName: 'OrderDetails',
+        createdAt: false,
+        updatedAt: false
     })
     OrderDetails.beforeCreate(user => user.id = uuidv4())
     return OrderDetails;

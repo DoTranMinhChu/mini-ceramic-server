@@ -1,74 +1,31 @@
+const UsernameExistedException = require('../exception/auth/username-existed.exception');
 const db = require('../models/index');
+const { exceptionResponse } = require('../response/exception.response');
 const { httpRespone } = require('../response/http.response');
 const accountServices = require('../services/account.service')
 
-const getAccounts = async (req, res) => {
-    const accounts = await db.Accounts.findAll({
-        include: [
-            {
-                model: db.AccountStatuses
-            },
-            {
-                model: db.AccountRoles
-            }
-        ]
-    });
-    res.status(200).json(accounts)
+const getAccountInfo = async (req, res) => {
+    const currentUser = req.currentUser;
+    const accountResponse = await accountServices.getAccountInfomationByUserId(currentUser.id);
+    return httpRespone(res, accountResponse);
 }
 
-const getAccountByAccount_id = async (req, res) => {
-    const { _id } = req.params
-    const accounts = await db.Accounts.findOne({
-        where: {
-            _id: _id
-        },
-        include: [
-            {
-                model: db.AccountStatuses
-            },
-            {
-                model: db.AccountRoles
-            }
-        ]
-    });
-    res.status(200).json(accounts)
-}
+const registerAccount = async (req, res) => {
+    const newAccount = await accountServices.createNewAccount(req.body);
 
-const getAccountsByRole_id = async (req, res) => {
-    const { _id } = req.params
-    const accounts = await db.Accounts.findAll({
-
-        include: [
-            {
-                model: db.AccountStatuses
-            },
-            {
-                model: db.AccountRoles,
-                where: {
-                    _id: _id
-                },
-            }
-        ]
-    });
-    res.status(200).json(accounts)
-}
-
-const registerAccount = (req, res) => {
-    const newAccount = accountServices.createNewAccount(req.body);
-    httpRespone(res, newAccount)
+    if (!newAccount) {
+        return exceptionResponse(res, new UsernameExistedException());
+    }
+    return httpRespone(res, newAccount)
 }
 
 const loginAccount = async (req, res) => {
-    const { username, password } = req.body;
-    const loginRequest = { username, password }
-    const loginResponse = await accountServices.loginAccount(loginRequest)
-    httpRespone(res, loginResponse)
+    const loginResponse = await accountServices.loginAccount(req, res)
+    return httpRespone(res, loginResponse)
 }
 
 module.exports = {
-    getAccounts,
-    getAccountByAccount_id,
-    getAccountsByRole_id,
+    getAccountInfo,
     registerAccount,
     loginAccount
 }
