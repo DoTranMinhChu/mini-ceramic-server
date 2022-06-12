@@ -1,8 +1,8 @@
 const swaggerJsDoc = require('swagger-jsdoc');
 
-const LoginRequest = require('../request/login.request');
-const RegisterRequest = require('../request/register.request');
-
+const loginRequest = require('../request/login.request');
+const registerRequest = require('../request/register.request');
+const refreshTokenRequest = require('../request/refreshToken.request');
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.1',
@@ -20,8 +20,9 @@ const swaggerOptions = {
                 }
             },
             schemas: {
-                LoginRequest,
-                RegisterRequest
+                loginRequest,
+                registerRequest,
+                refreshTokenRequest
             }
         },
     },

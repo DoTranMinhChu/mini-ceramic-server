@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const app = express();
 
-const AccountsRouter = require('./routers/accounts.router')
+const usersRouter = require('./routers/users.router')
 const OrdersRouter = require('./routers/orders.router')
 const ProductsRouter = require('./routers/products.router')
 
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/document', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 const PORT = process.env.PORT || 5000;
 
-app.use('/api', AccountsRouter)
+app.use('/api', usersRouter)
 app.use('/api', OrdersRouter)
 app.use('/api', ProductsRouter) 
 

@@ -1,5 +1,5 @@
 const express = require('express');
-const AccountsController = require('../controllers/accounts.controller');
+const usersController = require('../controllers/users.controller');
 const auth = require('../middleware/auth.middleware');
 
 const router = express.Router();
@@ -7,26 +7,26 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/accounts/info:
+ * /api/users/info:
  *   get:
  *     security:
  *       - bearerAuth: []
  *     tags:
- *       - Accounts
- *     description: Get infomation account
+ *       - Users
+ *     description: Get infomation user
  *     responses:
  *       200:
  *         description: Success
  * 
  */
-router.get('/accounts/info', auth, AccountsController.getAccountInfo)
+router.get('/users/info', auth, usersController.getUserInfo)
 
 /**
  * @swagger
  * /api/register:
  *   post:
  *     tags:
- *       - Accounts
+ *       - Users
  *     description: Register
  *     consumes:
  *       - application/json
@@ -38,17 +38,17 @@ router.get('/accounts/info', auth, AccountsController.getAccountInfo)
  *             $ref: '#/components/schemas/RegisterRequest'
  *     responses:
  *       201:
- *         description: New account created!
+ *         description: New user created!
  * 
  */
-router.post('/register', AccountsController.registerAccount)
+router.post('/register', usersController.registerUser)
 
 /**
  * @swagger
  * /api/login:
  *   post:
  *     tags:
- *       - Accounts
+ *       - Users
  *     description: Login
  *     consumes:
  *       - application/json
@@ -60,9 +60,34 @@ router.post('/register', AccountsController.registerAccount)
  *             $ref: '#/components/schemas/LoginRequest'
  *     responses:
  *       201:
- *         description: Login account created!
+ *         description: Login user created!
  * 
  */
-router.post('/login', AccountsController.loginAccount)
+router.post('/login', usersController.loginUser)
+
+
+/**
+ * @swagger
+ * /api/token:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Users
+ *     description: Refresh Token
+ *     consumes:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RefreshTokenRequest'
+ *     responses:
+ *       201:
+ *         description: Refresh Token
+ * 
+ */
+router.post('/token', auth, usersController.issueNewAccessToken)
 
 module.exports = router;

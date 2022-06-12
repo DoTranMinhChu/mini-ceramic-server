@@ -1,7 +1,7 @@
 const db = require('../models/index')
 
 const getProducts = async (req, res) => {
-    const accounts = await db.Products.findAll({
+    const users = await db.Products.findAll({
         include: [
             {
                 model: db.ProductCategories
@@ -15,7 +15,7 @@ const getProducts = async (req, res) => {
 
         ]
     });
-    res.status(200).json(accounts)
+    res.status(200).json(users)
 }
 
 

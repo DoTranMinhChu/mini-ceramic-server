@@ -7,7 +7,7 @@ const { orderStatus, orderStatusDefault } = require('../constant/orderStatus.enu
 module.exports = (sequelize, DataTypes) => {
     class Orders extends Model {
         static associate(models) {
-            Orders.hasOne(models.Accounts, { foreignKey: 'id', sourceKey: 'accountId' })
+            Orders.hasOne(models.Users, { foreignKey: 'id', sourceKey: 'userId' })
             Orders.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId' })
         }
     }
@@ -26,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
                 min: 0
             }
         },
-        accountId: {
+        userId: {
             allowNull: false,
             type: DataTypes.UUID,
             references: {
-                model: 'Accounts',
+                model: 'Users',
                 key: 'id'
             },
             onUpdate: 'cascade',

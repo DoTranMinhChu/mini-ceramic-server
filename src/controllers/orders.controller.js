@@ -1,10 +1,10 @@
 const db = require('../models/index')
 
 const getOrders = async (req, res) => {
-    const accounts = await db.Orders.findAll({
+    const users = await db.Orders.findAll({
         include: [
             {
-                model: db.Accounts
+                model: db.Users
             },
             {
                 model: db.Shops
@@ -15,18 +15,18 @@ const getOrders = async (req, res) => {
 
         ]
     });
-    res.status(200).json(accounts)
+    res.status(200).json(Users)
 }
 
 const getOrderByOrder_id = async (req, res) => {
     const { _id } = req.params
-    const accounts = await db.Orders.findOne({
+    const users = await db.Orders.findOne({
         where: {
             _id: _id
         },
         include: [
             {
-                model: db.Accounts
+                model: db.Users
             },
             {
                 model: db.Shops
@@ -37,15 +37,15 @@ const getOrderByOrder_id = async (req, res) => {
 
         ]
     });
-    res.status(200).json(accounts)
+    res.status(200).json(Users)
 }
 
-const getOrdersByAccount_id = async (req, res) => {
+const getOrdersByUser_id = async (req, res) => {
     const { _id } = req.params
-    const accounts = await db.Orders.findAll({
+    const users = await db.Orders.findAll({
         include: [
             {
-                model: db.Accounts,
+                model: db.Users,
                 where: {
                     _id: _id
                 },
@@ -59,14 +59,14 @@ const getOrdersByAccount_id = async (req, res) => {
 
         ]
     });
-    res.status(200).json(accounts)
+    res.status(200).json(Users)
 }
 const getOrdersByShop_id = async (req, res) => {
     const { _id } = req.params
-    const accounts = await db.Orders.findAll({
+    const users = await db.Orders.findAll({
         include: [
             {
-                model: db.Accounts
+                model: db.Users
 
             },
             {
@@ -81,12 +81,12 @@ const getOrdersByShop_id = async (req, res) => {
 
         ]
     });
-    res.status(200).json(accounts)
+    res.status(200).json(Users)
 }
 
 module.exports = {
     getOrders,
     getOrderByOrder_id,
-    getOrdersByAccount_id,
+    getOrdersByUser_id,
     getOrdersByShop_id
 }

@@ -4,12 +4,12 @@ const { v4: uuidv4 } = require('uuid');
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class ProductCategories extends Model {
+    class Categories extends Model {
         static associate(models) {
-            ProductCategories.belongsTo(models.Products, { foreignKey: 'id' });
+            Categories.belongsTo(models.Products, { foreignKey: 'id'});
         }
     }
-    ProductCategories.init({
+    Categories.init({
         id: {
             allowNull: false,
             autoIncrement: true,
@@ -23,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'ProductCategories',
+        modelName: 'Categories',
         createdAt: false,
         updatedAt: false
     });
-    ProductCategories.beforeCreate(user => user.id = uuidv4())
-    return ProductCategories;
+    Categories.beforeCreate(user => user.id = uuidv4())
+    return Categories;
 };

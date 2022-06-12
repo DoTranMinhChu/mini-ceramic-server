@@ -5,23 +5,23 @@ const { v4: uuidv4 } = require('uuid');
 
 const { Model } = require('sequelize');
 const { role, roleDefault } = require('../constant/role.enum');
-const { accountStatus, accountStatusDefault } = require('../constant/accountStatus.enum');
+const { userStatus, userStatusDefault } = require('../constant/userStatus.enum');
 
 
 module.exports = (sequelize, DataTypes) => {
-    class Accounts extends Model {
+    class Users extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            Accounts.belongsTo(models.Orders, { foreignKey: 'id', sourceKey: 'accountid' });
+            Users.belongsTo(models.Orders, { foreignKey: 'id', sourceKey: 'userid' });
 
 
         }
     }
-    Accounts.init({
+    Users.init({
         id: {
             allowNull: false,
             primaryKey: true,
@@ -70,19 +70,19 @@ module.exports = (sequelize, DataTypes) => {
         },
         status: {
             allowNull: false,
-            type: DataTypes.ENUM(accountStatus),
-            defaultValue: accountStatusDefault,
+            type: DataTypes.ENUM(userStatus),
+            defaultValue: userStatusDefault,
             onUpdate: 'cascade',
             onDelete: 'cascade'
         },
     }, {
         sequelize,
-        modelName: 'Accounts',
+        modelName: 'Users',
         timestamps: false,
         createdAt: false,
         updatedAt: false
     }
     );
-    Accounts.beforeCreate(user => user.id = uuidv4())
-    return Accounts;
+    Users.beforeCreate(user => user.id = uuidv4())
+    return Users;
 };

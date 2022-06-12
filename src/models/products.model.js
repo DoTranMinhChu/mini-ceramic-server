@@ -7,7 +7,7 @@ const { productStatus, productStatusDefault } = require('../constant/productStat
 module.exports = (sequelize, DataTypes) => {
     class Products extends Model {
         static associate(models) {
-            Products.hasOne(models.ProductCategories, { foreignKey: 'id', sourceKey: 'categoryId' })
+            Products.hasOne(models.Categories, { foreignKey: 'id', sourceKey: 'categoryId' })
             Products.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId' })
         }
     }
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.UUID,
             references: {
-                model: 'ProductCategories',
+                model: 'Categories',
                 key: 'id'
             },
             onUpdate: 'cascade',

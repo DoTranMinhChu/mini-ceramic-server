@@ -1,11 +1,11 @@
 'use strict';
 const { role, roleDefault } = require('../src/constant/role.enum');
-const { accountStatus, accountStatusDefault } = require('../src/constant/accountStatus.enum');
+const { userStatus, userStatusDefault } = require('../src/constant/userStatus.enum');
 
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('Accounts', {
+        await queryInterface.createTable('users', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -54,14 +54,14 @@ module.exports = {
             },
             status: {
                 allowNull: false,
-                type: Sequelize.ENUM(accountStatus),
-                defaultValue: accountStatusDefault,
+                type: Sequelize.ENUM(userStatus),
+                defaultValue: userStatusDefault,
                 onUpdate: 'cascade',
                 onDelete: 'cascade'
             },
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('Accounts');
+        await queryInterface.dropTable('users');
     }
 };

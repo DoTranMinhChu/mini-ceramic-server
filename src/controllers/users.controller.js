@@ -1,40 +1,28 @@
-const InvalidCredentialsException = require('../exception/auth/invalid-credentials.exception');
-const userService = require('../services/user.services');
-const Role = require('../_helpers/role');
-const { exceptionRespone } = require('../response/exception.response')
+const { httpRespone } = require('../response/http.response');
+const userrServices = require('../services/user.service')
 
-
-function authenticate(req, res, next) {
-    userService.authenticate(req.body)
-        .then(user => user ? res.json(user) : res.status(400).json({ message: 'Username or password is incorrect' }))
-        .catch(err => next(err));
+const getUserInfo = async (req, res) => {
+    const userrResponse = await userrServices.getUserInfomationByUserId(req, res);
+    return httpRespone(res, userrResponse);
 }
 
-function getAll(req, res, next) {
-    if (!req.currentUser) {
-        exceptionRespone(res, new InvalidCredentialsException())
-    }
-    userService.getAll()
-        .then(users => res.json(users))
-        .catch(err => next(err));
+const registerUser = async (req, res) => {
+    const newUser = await userrServices.createNewUser(req, res);
+    return httpRespone(res, newUser);
 }
 
-function getById(req, res, next) {
-    const currentUser = req.user;
-    const id = parseInt(req.params.id);
-
-    // only allow admins to access other user records
-    if (id !== currentUser.sub && currentUser.role !== Role.Admin) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-
-    userService.getById(req.params.id)
-        .then(user => user ? res.json(user) : res.sendStatus(404))
-        .catch(err => next(err));
+const loginUser = async (req, res) => {
+    const loginResponse = await userrServices.loginUser(req, res);
+    return httpRespone(res, loginResponse);
 }
+const issueNewAccessToken = async (req, res) => {
+    const newAccessToken = await userrServices.renewAccessToken(req, res);
+    return httpRespone(res, newAccessToken);
 
-
+}
 module.exports = {
-    authenticate, getAll, getById
-
+    getUserInfo,
+    registerUser,
+    loginUser,
+    issueNewAccessToken
 }

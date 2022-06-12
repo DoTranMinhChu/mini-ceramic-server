@@ -1,10 +1,12 @@
 module.exports = {
         properties: {
             username: {
-                type: "string"
+                type: "string",
+                default: "username@gmail.com"
             },
             password: {
-                type: "string"
+                type: "string",
+                default:"password"
             }
         }
 }

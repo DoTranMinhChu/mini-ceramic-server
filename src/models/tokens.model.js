@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.UUID
         },
         userId: {
-            allowNull: false,
+            allntowNull: false,
             type: DataTypes.UUID,
             references: {
-                model: 'Accounts',
+                model: 'Users',
                 key: 'id'
             },
             onUpdate: 'cascade',

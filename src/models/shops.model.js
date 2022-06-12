@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.UUID,
             references: {
-                model: 'Accounts',
+                model: 'Users',
                 key: 'id'
             },
             onUpdate: 'cascade',
