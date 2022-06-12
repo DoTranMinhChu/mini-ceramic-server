@@ -4,7 +4,7 @@ const { orderDetailStatus, orderDetailStatusDefault } = require('../src/constant
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('orderDetails', {
+        await queryInterface.createTable('OrderDetails', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -15,7 +15,7 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.UUID,
                 references: {
-                    model: 'products',
+                    model: 'Products',
                     key: 'id'
                 },
                 onUpdate: 'cascade',
@@ -32,7 +32,7 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.UUID,
                 references: {
-                    model: 'orders',
+                    model: 'Orders',
                     key: 'id'
                 },
                 onUpdate: 'cascade',
@@ -49,6 +49,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('orderDetails');
+        await queryInterface.dropTable('OrderDetails');
     }
 };

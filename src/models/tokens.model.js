@@ -7,7 +7,7 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Token extends Model {
+    class Tokens extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
 
-            Token.belongsTo(models.Products, { foreignKey: 'id' });
+            Tokens.belongsTo(models.Products, { foreignKey: 'id' });
         }
     }
-    Token.init({
+    Tokens.init({
         id: {
             allowNull: false,
             autoIncrement: true,
@@ -49,6 +49,6 @@ module.exports = (sequelize, DataTypes) => {
         createdAt: false,
         updatedAt: false
     });
-    Token.beforeCreate(user => user.id = uuidv4())
-    return Token;
+    Tokens.beforeCreate(user => user.id = uuidv4())
+    return Tokens;
 };

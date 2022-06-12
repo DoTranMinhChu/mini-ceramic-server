@@ -8,5 +8,6 @@ module.exports = MessageResponse = {
   [StatusCode.USERNAME_EXISTED]: 'Username existed.',
   [StatusCode.PASSWORD_INCORRECT]: 'Password incorrect.',
   [StatusCode.REGISTER_FAILED]: 'Register failed.',
-  [StatusCode.INVALID_REFRESH_TOKEN]: 'Refresh token invalid or expired.'
+  [StatusCode.INVALID_REFRESH_TOKEN]: 'Refresh token invalid or expired.',
+  [StatusCode.LOGOUT_FAILED]: 'Logout failed.',
 };

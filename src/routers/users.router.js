@@ -35,7 +35,7 @@ router.get('/users/info', auth, usersController.getUserInfo)
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RegisterRequest'
+ *             $ref: '#/components/schemas/registerRequest'
  *     responses:
  *       201:
  *         description: New user created!
@@ -57,21 +57,42 @@ router.post('/register', usersController.registerUser)
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/LoginRequest'
+ *             $ref: '#/components/schemas/loginRequest'
  *     responses:
  *       201:
- *         description: Login user created!
+ *         description: Login responses
  * 
  */
 router.post('/login', usersController.loginUser)
 
+/**
+ * @swagger
+ * /api/logout:
+ *   post:
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     description: Logout
+ *     consumes:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/refreshTokenRequest'
+ *     responses:
+ *       201:
+ *         description: Logout response
+ * 
+ */
+router.post('/logout', auth, usersController.logoutUser)
 
 /**
  * @swagger
  * /api/token:
  *   post:
- *     security:
- *       - bearerAuth: []
  *     tags:
  *       - Users
  *     description: Refresh Token
@@ -82,12 +103,14 @@ router.post('/login', usersController.loginUser)
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RefreshTokenRequest'
+ *             $ref: '#/components/schemas/refreshTokenRequest'
  *     responses:
  *       201:
  *         description: Refresh Token
  * 
  */
-router.post('/token', auth, usersController.issueNewAccessToken)
+router.post('/token', usersController.issueNewAccessToken)
+
+
 
 module.exports = router;

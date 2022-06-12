@@ -4,7 +4,7 @@ const { productStatus, productStatusDefault } = require('../src/constant/product
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('products', {
+        await queryInterface.createTable('Products', {
             id: {
                 allowNull: false,
                 primaryKey: true,
@@ -34,7 +34,7 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.UUID,
                 references: {
-                    model: 'categories',
+                    model: 'Categories',
                     key: 'id'
                 },
                 onUpdate: 'cascade',
@@ -61,6 +61,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('products');
+        await queryInterface.dropTable('Products');
     }
 };

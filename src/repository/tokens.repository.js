@@ -36,7 +36,7 @@ const deleteRefreshTokenById = async (id, userId, agent) => {
                 }
             }
         )
-    )?.dataValues;
+    );
 }
 
 const deleteTokenExpireByUserId = async (userId) => {
@@ -51,7 +51,7 @@ const deleteTokenExpireByUserId = async (userId) => {
                 }
             }
         )
-    )?.dataValues;
+    );
 }
 
 module.exports = {
