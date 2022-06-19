@@ -3,21 +3,24 @@ const config = require('../config/config.json');
 const jwt = require('jsonwebtoken');
 const usersRepository = require('../repository/users.repository');
 const tokensRepository = require('../repository/tokens.repository');
-const { exceptionResponse } = require('../response/exception.response');
 const usernameExistedException = require('../exception/auth/username-existed.exception');
 const PasswordIncorrectException = require('../exception/auth/password-incorrect.exception');
 const RegisterFailedExistedException = require('../exception/auth/register-failed.exception');
 const InvalidRefreshTokenException = require('../exception/auth/invalid-refresh-token.exception');
 const LogoutFailedExistedException = require('../exception/auth/logout-failed.exception');
+const UserNotExistedException = require('../exception/auth/user-not-existed.exception');
+const { LoginRequest } = require('../request/login.request');
+const { RefreshTokenRequest } = require('../request/refresh-token.request');
+const { httpResponse } = require('../response/http.response');
+const { exceptionResponse } = require('../response/exception.response');
+
 const createNewUser = async (req, res) => {
     const user = req.body;
     const userExisted = await usersRepository.getUserByUsername(user.username);
-
     if (userExisted) {
         return exceptionResponse(res, new usernameExistedException());
     }
     const hashPass = await hashPassword(user.password);
-
     const newUser = await usersRepository.createNewUser({
         username: user.username,
         password: hashPass,
@@ -27,56 +30,54 @@ const createNewUser = async (req, res) => {
     if (!newUser) {
         return exceptionResponse(res, new RegisterFailedExistedException());
     }
-
-    const { password, ...newUserRespont } = newUser
-    return newUserRespont;
+    const { password, ...newUserRespont } = newUser;
+    return httpResponse(res, newUserRespont);
 
 }
 
 
 const loginUser = async (req, res) => {
     const userAgnet = req.get('User-Agent');
-    const loginRequest = {
-        username: req.body.username,
-        password: req.body.password
-    };
+    const loginRequest = new LoginRequest(req.body);
     const user = await usersRepository.getUserByUsername(loginRequest.username);
     if (!user) {
-        return exceptionResponse(res, new usernameExistedException())
+        return exceptionResponse(res, new usernameExistedException());
     }
     const check = await bcrypt.compareSync(loginRequest.password, user.password);
     if (!check) {
-        return exceptionResponse(res, new PasswordIncorrectException())
+        return exceptionResponse(res, new PasswordIncorrectException());
     }
-    const tokens = await issueTokens(user, userAgnet)
-    return tokens;
-
+    const tokens = await issueTokens(user, userAgnet);
+    return httpResponse(res, tokens);
 }
 
 const logoutUser = async (req, res) => {
     const userAgnet = req.get('User-Agent');
     const currentUser = req.currentUser;
-    const { refreshToken } = req.body;
+    const { refreshToken } = new RefreshTokenRequest(req.body);
     const logout = await tokensRepository.deleteRefreshTokenById(refreshToken, currentUser.id, userAgnet);
     if (!logout) {
-        return exceptionResponse(res,new LogoutFailedExistedException())
+        return exceptionResponse(res, new LogoutFailedExistedException());
     }
-    return 'Logout sucessfully';
-
+    return httpResponse(res, 'Logout sucessfully');
 }
 
 const getUserInfomationByUserId = async (req, res) => {
     const { currentUser } = req;
-    const { password, ...userWithoutPassword } = await usersRepository.getUserByUserId(currentUser.id);
-    return userWithoutPassword;
+    const userExisted = await usersRepository.getUserByUserId(currentUser.id);
+    if (!userExisted) {
+        return exceptionResponse(res, new UserNotExistedException());
+    }
+    const { password, ...userWithoutPassword } = userExisted;
+    return httpResponse(res, userWithoutPassword);
 }
 
 const renewAccessToken = async (req, res) => {
-    const { refreshToken } = req.body;
+    const { refreshToken } = new RefreshTokenRequest(req.body);
     const tokenExisted = await tokensRepository.getRefreshTokenById(refreshToken);
     if (!tokenExisted) {
         await tokensRepository.deleteTokenExpireByUserId(refreshToken);
-        return exceptionResponse(res, new InvalidRefreshTokenException())
+        return exceptionResponse(res, new InvalidRefreshTokenException());
     }
     const { password, ...userWithoutPassword } = await usersRepository.getUserByUserId(tokenExisted.userId);
     const accessToken = jwt.sign(
@@ -86,7 +87,7 @@ const renewAccessToken = async (req, res) => {
             expiresIn: config.accessTokenExpiresIn
         }
     );
-    return accessToken;
+    return httpResponse(res, accessToken);
 }
 
 const issueTokens = async (user, agent) => {
@@ -117,7 +118,6 @@ const issueRefreshToken = async (user, agent) => {
 }
 
 const hashPassword = async (password) => {
-    console.log('check')
     const salt = await bcrypt.genSaltSync(10);
     const hash = await bcrypt.hashSync(password, salt);
     return hash;

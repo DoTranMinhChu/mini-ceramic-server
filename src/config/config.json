@@ -1,5 +1,5 @@
 {
   "secret": "Minh Chu",
-  "accessTokenExpiresIn": "5m",
+  "accessTokenExpiresIn": "7d",
   "refreshTokenExpiresIn": 604800000
 }

@@ -4,14 +4,14 @@ const InvalidCredentialsException = require('../exception/auth/invalid-credentia
 const { exceptionResponse } = require('../response/exception.response');
 
 
-const auth = async (req, res, next) => {
+const role = (roles) => async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
         const currentUser = jwt.verify(token, secret, (err, payload) => {
-            if (!err) {
-                return payload;
+            if (!roles.includes(payload?.role) || err) {
+                throw new exceptionResponse()
             }
-            throw new exceptionResponse()
+            return payload;
         })
         req.currentUser = currentUser;
         next();
@@ -21,4 +21,4 @@ const auth = async (req, res, next) => {
     }
 
 }
-module.exports = auth;
+module.exports = role;

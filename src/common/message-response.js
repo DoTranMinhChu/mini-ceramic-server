@@ -10,4 +10,8 @@ module.exports = MessageResponse = {
   [StatusCode.REGISTER_FAILED]: 'Register failed.',
   [StatusCode.INVALID_REFRESH_TOKEN]: 'Refresh token invalid or expired.',
   [StatusCode.LOGOUT_FAILED]: 'Logout failed.',
+  [StatusCode.SHOP_NAME_EXISTED]: 'Shop name existed before.',
+  [StatusCode.USER_NOT_EXISTED]: 'User not existed.',
+  [StatusCode.CATEGORY_NOT_EXISTED]: 'Category not existed.',
+  [StatusCode.UPDATE_CATEGORY_FAILED]: 'Category update failed.'
 };
