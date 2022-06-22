@@ -7,8 +7,8 @@ const { productStatus, productStatusDefault } = require('../constant/productStat
 module.exports = (sequelize, DataTypes) => {
     class Products extends Model {
         static associate(models) {
-            Products.hasOne(models.Categories, { foreignKey: 'id', sourceKey: 'categoryId' })
-            Products.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId' })
+            Products.hasOne(models.Categories, { foreignKey: 'id', sourceKey: 'categoryId', as: 'category' })
+            Products.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId', as: 'shop' })
         }
     }
     Products.init({

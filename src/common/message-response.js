@@ -13,5 +13,8 @@ module.exports = MessageResponse = {
   [StatusCode.SHOP_NAME_EXISTED]: 'Shop name existed before.',
   [StatusCode.USER_NOT_EXISTED]: 'User not existed.',
   [StatusCode.CATEGORY_NOT_EXISTED]: 'Category not existed.',
-  [StatusCode.UPDATE_CATEGORY_FAILED]: 'Category update failed.'
+  [StatusCode.UPDATE_CATEGORY_FAILED]: 'Category update failed.',
+  [StatusCode.SHOP_NOT_EXISTED]: 'Shop not existed.',
+  [StatusCode.NOT_OWNER_SHOP]: 'User is not owner of shop.',
+  [StatusCode.PRODUCT_NOT_EXISTED]: 'Product not existed.'
 };

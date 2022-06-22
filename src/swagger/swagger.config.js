@@ -2,11 +2,14 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const { idSchema } = require('./schemas/id.schema');
 const { loginSchema } = require('./schemas/login.schema');
 const { newCategorySchema } = require('./schemas/new-category.schema');
+const { newProductSchema } = require('./schemas/new-product.schema');
 const { newShopSchema } = require('./schemas/new-shop.schema');
 const { pagingSchema } = require('./schemas/paging.schema');
+const { productOrderBySchema } = require('./schemas/product-order-by.schema');
 const { refreshTokenSchema } = require('./schemas/refresh-token.schema');
 const { registerSchema } = require('./schemas/register.schema');
 const { sortSchema } = require('./schemas/sort.schema');
+const { updateProductSchema } = require('./schemas/update-product.schema');
 
 const swaggerOptions = {
     swaggerDefinition: {
@@ -31,9 +34,12 @@ const swaggerOptions = {
                 refreshTokenSchema,
                 newShopSchema,
                 newCategorySchema,
+                newProductSchema,
                 sortSchema,
-                perPageSchema : pagingSchema.perPage,
-                pageSchema : pagingSchema.page
+                productOrderBySchema,
+                updateProductSchema,
+                perPageSchema: pagingSchema.perPage,
+                pageSchema: pagingSchema.page
             }
         },
     },

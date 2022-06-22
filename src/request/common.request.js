@@ -1,8 +1,12 @@
 
 const CommonRequest = class {
     id;
+    userId;
     ownerId;
     shopId;
+    productId;
+    categoryId;
+    orderBy;
     page;
     perPage;
     sort;
@@ -13,6 +17,8 @@ const CommonRequest = class {
     password;
     description;
     address;
+    price;
+
 
     refreshToken;
     asscessToken;

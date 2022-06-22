@@ -22,7 +22,7 @@ const getAllCategories = async (req, res) => {
     return pagingResponse(res, getAllCategoriesResponse, metaData(page, perPage, total));
 }
 const updateCategoryByCategoryId = async (req, res) => {
-    let { id } = new CommonRequest(req.params);
+    const { id } = new CommonRequest(req.params);
     const categoryExited = await categoriesRepository.findOne({ id: id });
     if (!categoryExited) {
         return exceptionResponse(res, new categoryNotExistedException())

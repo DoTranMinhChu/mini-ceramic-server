@@ -1,5 +1,11 @@
+
 const db = require("../models");
 const { NewShopRequest } = require("../request/new-shop.request");
+
+const findOne = async (where) => {
+    return (await db.Shops.findOne({ where: where }))?.dataValues;
+}
+
 
 const createShop = async (ownerId, newShopRequest) => {
     const newShop = new NewShopRequest(newShopRequest);
@@ -12,19 +18,21 @@ const createShop = async (ownerId, newShopRequest) => {
 
 }
 
-const findShopByShopName = async (shopName) => {
+const getShopByShopName = async (shopName) => {
     return (await db.Shops.findOne({
-        name: shopName
+        where: {
+            name: shopName
+        }
     }))?.dataValues;
 }
 
-const findAll = async (skip, take) => {
+const getAllShops = async (skip, take) => {
     const listShop = await db.Shops.findAll(
         {
             include: [{
                 model: db.Users,
                 as: 'owner',
-                attributes:['id', 'username', 'avatar', 'address'],
+                attributes: ['id', 'username', 'avatar', 'address'],
             }],
             offset: skip || 0,
             limit: take || null
@@ -32,12 +40,15 @@ const findAll = async (skip, take) => {
     )
     return listShop.map(item => item?.dataValues);
 }
+
 const countAll = async () => {
     return await db.Shops.count();
 }
+
 module.exports = {
+    findOne,
     createShop,
-    findShopByShopName,
-    findAll,
+    getShopByShopName,
+    getAllShops,
     countAll
 }
