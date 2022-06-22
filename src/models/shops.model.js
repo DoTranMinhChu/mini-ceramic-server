@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             Shops.belongsTo(models.Orders, { foreignKey: 'id' });
             Shops.belongsTo(models.Products, { foreignKey: 'id' });
+            Shops.hasOne(models.Users, { as: 'owner', foreignKey: 'id', sourceKey: 'ownerId' })
         }
     }
     Shops.init({

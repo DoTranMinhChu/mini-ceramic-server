@@ -21,6 +21,11 @@ const findShopByShopName = async (shopName) => {
 const findAll = async (skip, take) => {
     const listShop = await db.Shops.findAll(
         {
+            include: [{
+                model: db.Users,
+                as: 'owner',
+                attributes:['id', 'username', 'avatar', 'address'],
+            }],
             offset: skip || 0,
             limit: take || null
         }

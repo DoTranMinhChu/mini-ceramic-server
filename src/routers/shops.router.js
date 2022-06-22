@@ -59,8 +59,7 @@ router.post('/shops', auth,
 router.get('/shops',
     getShop = async (req, res) => {
         const getAllShopsResponse = await shopsService.getAllShop(req, res);
-        console.log('check')
-        return getAllShopsResponse
+        return getAllShopsResponse;
     }
 )
 
