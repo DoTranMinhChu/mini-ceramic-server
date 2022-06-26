@@ -1,5 +1,4 @@
 const express = require('express')
-const roleEnum = require('../constant/role.enum')
 const role = require('../middleware/role.middleware')
 const categoriesService = require('../services/categories.service')
 const router = express.Router()

@@ -7,7 +7,8 @@ const { orderDetailStatus, orderDetailStatusDefault } = require('../constant/ord
 module.exports = (sequelize, DataTypes) => {
     class OrderDetails extends Model {
         static associate(models) {
-
+            OrderDetails.belongsTo(models.Orders, { foreignKey: 'id'})
+            OrderDetails.hasOne(models.Products,{foreignKey:'id',sourceKey:'productId', as:'product'})
         }
     }
     OrderDetails.init({

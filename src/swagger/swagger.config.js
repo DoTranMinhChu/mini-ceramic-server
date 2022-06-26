@@ -4,6 +4,8 @@ const { loginSchema } = require('./schemas/login.schema');
 const { newCategorySchema } = require('./schemas/new-category.schema');
 const { newProductSchema } = require('./schemas/new-product.schema');
 const { newShopSchema } = require('./schemas/new-shop.schema');
+const { ordersOrderBySchema } = require('./schemas/orders-order-by.schema');
+const { newOrdersSchema } = require('./schemas/orders.schema');
 const { pagingSchema } = require('./schemas/paging.schema');
 const { productOrderBySchema } = require('./schemas/product-order-by.schema');
 const { refreshTokenSchema } = require('./schemas/refresh-token.schema');
@@ -37,7 +39,9 @@ const swaggerOptions = {
                 newProductSchema,
                 sortSchema,
                 productOrderBySchema,
+                ordersOrderBySchema,
                 updateProductSchema,
+                newOrdersSchema,
                 perPageSchema: pagingSchema.perPage,
                 pageSchema: pagingSchema.page
             }

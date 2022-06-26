@@ -2,8 +2,8 @@ const StatusCode = require('../../constant/status-code');
 const AppException = require('../app.exception');
 const { StatusCodes } = require('http-status-codes');
 
-module.exports = class ProductNotExistedException extends AppException {
+module.exports = class OnwerShopCanNotOrderException extends AppException {
     constructor() {
-        super(StatusCode.PRODUCT_NOT_EXISTED, StatusCodes.BAD_REQUEST);
+        super(StatusCode.OWNER_SHOP_CAN_NOT_ORDER, StatusCodes.BAD_REQUEST);
     }
 }

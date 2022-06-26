@@ -7,8 +7,9 @@ const { orderStatus, orderStatusDefault } = require('../constant/orderStatus.enu
 module.exports = (sequelize, DataTypes) => {
     class Orders extends Model {
         static associate(models) {
-            Orders.hasOne(models.Users, { foreignKey: 'id', sourceKey: 'userId' })
-            Orders.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId' })
+            Orders.hasOne(models.Users, { foreignKey: 'id', sourceKey: 'userId', as: 'users', as: 'user' })
+            Orders.hasOne(models.Shops, { foreignKey: 'id', sourceKey: 'shopId', as: 'shops', as: 'shop' })
+            Orders.hasMany(models.OrderDetails, { foreignKey: 'orderId', sourceKey: 'id', as: 'details' })
         }
     }
     Orders.init({
@@ -60,6 +61,13 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             type: DataTypes.ENUM(orderStatus),
             defaultValue: orderStatusDefault,
+            onUpdate: 'cascade',
+            onDelete: 'cascade'
+        },
+        paid: {
+            allowNull: false,
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
             onUpdate: 'cascade',
             onDelete: 'cascade'
         }

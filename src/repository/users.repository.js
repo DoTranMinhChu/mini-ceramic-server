@@ -1,5 +1,9 @@
 const db = require("../models");
 
+const findOne = async (where) => {
+    return (await db.Users.findOne({ where: where }))?.dataValues;
+}
+
 const createNewUser = async (user) => {
     return (
         await db.Users.create({
@@ -40,6 +44,7 @@ const getUserByUserId = async (userId) => {
 }
 
 module.exports = {
+    findOne,
     createNewUser,
     getUserByUsername,
     getUserByUserId,

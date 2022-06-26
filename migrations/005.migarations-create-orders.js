@@ -38,7 +38,6 @@ module.exports = {
                 onUpdate: 'cascade',
                 onDelete: 'cascade'
             },
-
             orderDate: {
                 allowNull: true,
                 type: Sequelize.DATE
@@ -50,9 +49,15 @@ module.exports = {
 
             status: {
                 allowNull: false,
-                type: Sequelize.UUID,
                 type: Sequelize.ENUM(orderStatus),
                 defaultValue: orderStatusDefault,
+                onUpdate: 'cascade',
+                onDelete: 'cascade'
+            },
+            paid:{
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
                 onUpdate: 'cascade',
                 onDelete: 'cascade'
             }

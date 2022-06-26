@@ -6,12 +6,14 @@ const { removeUndefinedFieldsFromObject } = require("./common.service");
 const productsRepository = require("../repository/products.repository");
 const shopsRepository = require("../repository/shops.repository");
 const categoriesRepository = require("../repository/categories.repository");
+const usersRepository = require("../repository/users.repository");
 const { exceptionResponse } = require("../response/exception.response");
-const shopNotExistedException = require("../exception/shop/shop-not-existed.exception");
-const notOwnerShopException = require("../exception/shop/not-owner-shop.exception");
-const categoryNotExistedException = require("../exception/category/category-not-existed.exception");
-const productNotExistedException = require("../exception/product/product-not-existed.exception");
 const { UpdateProductRequest } = require("../request/update-product.request");
+const UserNotExistedException = require("../exception/auth/user-not-existed.exception");
+const ShopNotExistedException = require("../exception/shop/shop-not-existed.exception");
+const CategoryNotExistedException = require("../exception/category/category-not-existed.exception");
+const NotOwnerShopException = require("../exception/shop/not-owner-shop.exception");
+const ProductNotExistedException = require("../exception/product/product-not-existed.exception")
 
 
 const createProduct = async (req, res) => {
@@ -19,20 +21,28 @@ const createProduct = async (req, res) => {
     const userId = currentUser.id;
     const newProductRequest = new NewProductRequest(req.body);
     const { shopId, categoryId } = newProductRequest;
+
+    const userExisted = await usersRepository.findOne({
+        id: userId
+    });
+    if (!userExisted) {
+        return exceptionResponse(res, new UserNotExistedException());
+    }
+
     const shopExisted = await shopsRepository.findOne({
         id: shopId
     });
+    if (!shopExisted) {
+        return exceptionResponse(res, new ShopNotExistedException());
+    }
     const cateExisted = await categoriesRepository.findOne({
         id: categoryId
     })
-    if (!shopExisted) {
-        return exceptionResponse(res, new shopNotExistedException());
-    }
     if (!cateExisted) {
-        return exceptionResponse(res, new categoryNotExistedException());
+        return exceptionResponse(res, new CategoryNotExistedException());
     }
     if (shopExisted.ownerId !== userId) {
-        return exceptionResponse(res, new notOwnerShopException());
+        return exceptionResponse(res, new NotOwnerShopException());
     }
 
 
@@ -51,7 +61,7 @@ const updateProduct = async (req, res) => {
         id: productId
     });
     if (!productExisted) {
-        return exceptionResponse(res, new productNotExistedException());
+        return exceptionResponse(res, new ProductNotExistedException());
     }
 
     const cateExisted = await categoriesRepository.findOne({
@@ -59,17 +69,17 @@ const updateProduct = async (req, res) => {
     })
 
     if (!cateExisted) {
-        return exceptionResponse(res, new categoryNotExistedException());
+        return exceptionResponse(res, new CategoryNotExistedException());
     }
 
     const shopExisted = await shopsRepository.findOne({
         id: productExisted.shopId
     });
     if (!shopExisted) {
-        return exceptionResponse(res, new shopNotExistedException());
+        return exceptionResponse(res, new ShopNotExistedException());
     }
     if (shopExisted.ownerId !== userId) {
-        return exceptionResponse(res, new notOwnerShopException());
+        return exceptionResponse(res, new NotOwnerShopException());
     }
     updateProductRequest.shopId = shopExisted.id;
     const updateProductResponse = await productsRepository.updateProduct(productExisted.id, updateProductRequest);

@@ -16,5 +16,11 @@ module.exports = MessageResponse = {
   [StatusCode.UPDATE_CATEGORY_FAILED]: 'Category update failed.',
   [StatusCode.SHOP_NOT_EXISTED]: 'Shop not existed.',
   [StatusCode.NOT_OWNER_SHOP]: 'User is not owner of shop.',
-  [StatusCode.PRODUCT_NOT_EXISTED]: 'Product not existed.'
+  [StatusCode.PRODUCT_NOT_EXISTED]: 'Product not existed.',
+  [StatusCode.ORDER_EMPTY]: 'Order is empty.',
+  [StatusCode.ORDER_FAILED]: 'Order faild.',
+  [StatusCode.PRODUCTS_FROM_MANY_SHOPS]: 'Products from many shops',
+  [StatusCode.OWNER_SHOP_CAN_NOT_ORDER]: 'Shop owners can not order by themselves.',
+  [StatusCode.ORDER_NOT_EXISTED]: 'Order not existed.',
+  [StatusCode.PAYMENT_FAILED]: 'Payment falied.'
 };

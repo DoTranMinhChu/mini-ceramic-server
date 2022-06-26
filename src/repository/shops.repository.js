@@ -32,7 +32,7 @@ const getAllShops = async (skip, take) => {
             include: [{
                 model: db.Users,
                 as: 'owner',
-                attributes: ['id', 'username', 'avatar', 'address'],
+                attributes: ['id', 'username', 'avatar', 'address', 'fullName'],
             }],
             offset: skip || 0,
             limit: take || null
