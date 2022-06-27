@@ -26,9 +26,11 @@ const getShopByShopName = async (shopName) => {
     }))?.dataValues;
 }
 
-const getAllShops = async (skip, take) => {
+const getAllShops = async (where, order, skip, take) => {
     const listShop = await db.Shops.findAll(
         {
+            where: where,
+            order: order,
             include: [{
                 model: db.Users,
                 as: 'owner',

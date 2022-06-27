@@ -18,8 +18,7 @@ const CommonRequest = class {
     description;
     address;
     price;
-
-
+    paid;
     refreshToken;
     asscessToken;
     constructor(request) {

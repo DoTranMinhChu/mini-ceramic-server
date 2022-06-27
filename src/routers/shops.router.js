@@ -51,6 +51,10 @@ router.post('/shops', auth,
  *         name: ownerId
  *         schema:
  *           $ref: '#/components/schemas/idSchema'
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           $ref: '#/components/schemas/shopStatusSchema'
  *     responses:
  *       200:
  *         description: Success
@@ -63,6 +67,54 @@ router.get('/shops',
     }
 )
 
-
+/**
+ * @swagger
+ * /api/shops/{id}/orders:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Shops
+ *     description: Get all shops
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           $ref: '#/components/schemas/idSchema'
+ *       - in: query
+ *         name: perPage
+ *         schema:
+ *           $ref: '#/components/schemas/perPageSchema'
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           $ref: '#/components/schemas/pageSchema'
+ *       - in: query
+ *         name: orderBy
+ *         schema:
+ *           $ref: '#/components/schemas/ordersOrderBySchema'
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           $ref: '#/components/schemas/sortSchema'
+ *       - in: query
+ *         name: paid
+ *         schema:
+ *           $ref: '#/components/schemas/trueFalseSchema'
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           $ref: '#/components/schemas/orderStatusSchema'
+ *     responses:
+ *       200:
+ *         description: Success
+ * 
+ */
+router.get('/shops/:id/orders', auth,
+    getOrderByShop = async (req, res) => {
+        const getAllShopsResponse = await shopsService.getOrderByShop(req, res);
+        return getAllShopsResponse;
+    }
+)
 
 module.exports = router;

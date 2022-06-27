@@ -89,9 +89,9 @@ const updateProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
 
-    let { page, perPage, shopId, categoryId, orderBy, sort } = new CommonRequest(req.query);
+    let { page, perPage, shopId, categoryId, orderBy, sort, status } = new CommonRequest(req.query);
     page = page ? page : 1;
-    const where = { shopId, categoryId }
+    const where = { shopId, categoryId, status }
     removeUndefinedFieldsFromObject(where);
     const order = orderBy ? [[orderBy, sort]] : []
     const getProductsReponse = await productsRepository.getAllProducts(

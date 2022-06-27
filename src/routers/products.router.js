@@ -96,6 +96,10 @@ router.patch('/products/:id', auth,
  *         name: sort
  *         schema:
  *           $ref: '#/components/schemas/sortSchema'
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           $ref: '#/components/schemas/productStatusSchema'
  *     responses:
  *       200:
  *         description: Success

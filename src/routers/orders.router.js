@@ -60,6 +60,14 @@ router.post('/orders', auth,
  *         name: sort
  *         schema:
  *           $ref: '#/components/schemas/sortSchema'
+ *       - in: query
+ *         name: paid
+ *         schema:
+ *           $ref: '#/components/schemas/trueFalseSchema'
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           $ref: '#/components/schemas/orderStatusSchema'
  *     responses:
  *       200:
  *         description: Success
@@ -93,8 +101,40 @@ router.get('/orders', auth,
  */
 router.post('/orders/pay/:id', auth,
     paymentOrder = async (req, res) => {
-
         const createNewOrdersResponse = await orderService.paymentOrder(req, res);
+        return createNewOrdersResponse;
+    }
+)
+
+
+/**
+ * @swagger
+ * /api/orders/status/{id}:
+ *   patch:
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Orders
+ *     description: Create new orders
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           $ref: '#/components/schemas/idSchema'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/updateStatusSchema'
+ *     responses:
+ *       200:
+ *         description: Success
+ * 
+ */
+router.patch('/orders/status/:id', auth,
+    paymentOrder = async (req, res) => {
+        const createNewOrdersResponse = await orderService.updateStatus(req, res);
         return createNewOrdersResponse;
     }
 )

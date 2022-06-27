@@ -3,6 +3,7 @@ const StatusCode = require('../constant/status-code');
 module.exports = MessageResponse = {
   [StatusCode.BAD_REQUEST]: 'Bad request.',
   [StatusCode.OK]: 'Success.',
+  [StatusCode.INSUFFICIENT_PREMISSIONS]: 'Insufficient permissions to make request.',
   [StatusCode.INVALID_LOGIN_CREDENTIALS]: 'Email or password invalid.',
   [StatusCode.INVALID_CREDENTIALS]: 'Token invalid or expired.',
   [StatusCode.USERNAME_EXISTED]: 'Username existed.',
@@ -22,5 +23,9 @@ module.exports = MessageResponse = {
   [StatusCode.PRODUCTS_FROM_MANY_SHOPS]: 'Products from many shops',
   [StatusCode.OWNER_SHOP_CAN_NOT_ORDER]: 'Shop owners can not order by themselves.',
   [StatusCode.ORDER_NOT_EXISTED]: 'Order not existed.',
-  [StatusCode.PAYMENT_FAILED]: 'Payment falied.'
+  [StatusCode.PAYMENT_FAILED]: 'Payment falied.',
+  [StatusCode.ORDER_PAID]: 'Order paid.',
+  [StatusCode.UNABLE_CHANGE_STATUS_ORDER_SHIPPED]: 'Unable to change the status of the order shipped.',
+  [StatusCode.UNABLE_CHANGE_STATUS_ORDER_DONE]: 'Unable to change the status of the order done.',
+  [StatusCode.CHANGE_STATUS_ORDER_FAILED] : 'Change the status order failed.'
 };

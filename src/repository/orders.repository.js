@@ -1,3 +1,4 @@
+const { orderCancelled } = require("../constant/orderStatus.enum");
 const db = require("../models");
 const { NewOrderRequest } = require("../request/new-orders.request");
 const orderDetailsRepository = require("./orderDetails.repository");
@@ -108,7 +109,7 @@ const paymentOrder = async (userId, orderId) => {
                 transaction: transaction
             }
         );
-        var total = order.total;
+        const total = order.total;
 
         const user = await db.Users.findOne(
             {
@@ -119,7 +120,7 @@ const paymentOrder = async (userId, orderId) => {
             }
         );
         const balance = user.balance;
-        const newBlance =  balance - total;
+        const newBlance = balance - total;
         await db.Users.update(
             {
                 balance: newBlance
@@ -155,10 +156,79 @@ const paymentOrder = async (userId, orderId) => {
     }
 }
 
+const update = async (newObject, where) => {
+    db.Orders.update(newObject, {
+        where: where
+    })
+}
+
+const cancelOrderAndRefund = async (orderId) => {
+    const transaction = await db.sequelize.transaction();
+    try {
+
+        const order = await db.Orders.findOne(
+            {
+                where: {
+                    id: orderId
+                },
+                transaction: transaction
+            }
+        );
+        const userId = order.userId;
+        const total = order.total;
+        const paid = order.paid;
+        await db.Orders.update(
+            {
+                status: "Cancelled",
+                paid: false
+            },
+            {
+                where: {
+                    id: orderId
+                },
+                transaction: transaction
+            }
+        )
+            
+        if (paid) {
+            const user = await db.Users.findOne(
+                {
+                    where: {
+                        id: userId
+                    },
+                    transaction: transaction
+                }
+            );
+            const balance = user.balance;
+            const newBlance = balance + total;
+            await db.Users.update(
+                {
+                    balance: newBlance
+                },
+                {
+                    where: {
+                        id: userId
+                    },
+                    transaction: transaction
+
+                }
+            )
+
+        }
+
+        await transaction.commit();
+        return true;
+    } catch (err) {
+        await transaction.rollback();
+        return false
+    }
+}
 module.exports = {
     findAll,
     countAll,
     findOne,
     createOrder,
-    paymentOrder
+    paymentOrder,
+    update,
+    cancelOrderAndRefund
 }

@@ -1,4 +1,8 @@
 module.exports = {
-    orderStatus: ["Processing", "Shipped", "Cancelled"],
+    orderStatus: ["Processing", "Shipped", "Done", "Cancelled"],
+    orderProcessing: "Processing",
+    orderShipped: "Shipped",
+    orderCancelled: "Cancelled",
+    orderDone: "Done",
     orderStatusDefault: "Processing"
 }
