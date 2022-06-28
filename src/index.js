@@ -28,9 +28,9 @@ app.get('*', (req, res) => res.status(200).send({
 
 
 
-const PORT = Process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Example app http://localhost:${PORT}/api/document`);
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+    console.log(`Example app http://localhost:${port}/api/document`);
 });
 
 module.exports = app;
