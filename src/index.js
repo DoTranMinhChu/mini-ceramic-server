@@ -1,8 +1,8 @@
+require('dotenv').config()
 const express = require('express');
 const swaggerDocs = require('./swagger/swagger.config');
 const swaggerUI = require('swagger-ui-express');
 const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
 const app = express();
 
 const usersRouter = require('./routers/users.router');
@@ -10,7 +10,6 @@ const shopsRouter = require('./routers/shops.router');
 const categoriesRouter = require('./routers/categories.router');
 const productsRouter = require('./routers/products.router');
 const ordersRouter = require('./routers/orders.router');
-dotenv.config();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -29,7 +28,7 @@ app.get('*', (req, res) => res.status(200).send({
 
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = Process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Example app http://localhost:${PORT}/api/document`);
 });
