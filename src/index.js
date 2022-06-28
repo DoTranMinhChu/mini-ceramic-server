@@ -3,7 +3,9 @@ const express = require('express');
 const swaggerDocs = require('./swagger/swagger.config');
 const swaggerUI = require('swagger-ui-express');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 const app = express();
+app.use(cors())
 
 const usersRouter = require('./routers/users.router');
 const shopsRouter = require('./routers/shops.router');
