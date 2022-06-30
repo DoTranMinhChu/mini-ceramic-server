@@ -12,7 +12,7 @@ const { LoginRequest } = require('../request/login.request');
 const { RefreshTokenRequest } = require('../request/refresh-token.request');
 const { httpResponse } = require('../response/http.response');
 const { exceptionResponse } = require('../response/exception.response');
-const UsernameNotExistedException = require('../exception/auth/Username-not-existed.exception');
+const UsernameNotExistedException = require('../exception/auth/username-not-existed.exception');
 const UsernameExistedException = require('../exception/auth/username-existed.exception');
 
 const createNewUser = async (req, res) => {
