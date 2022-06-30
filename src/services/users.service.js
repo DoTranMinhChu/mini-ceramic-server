@@ -3,7 +3,6 @@ const config = require('../config/config.json');
 const jwt = require('jsonwebtoken');
 const usersRepository = require('../repository/users.repository');
 const tokensRepository = require('../repository/tokens.repository');
-const usernameExistedException = require('../exception/auth/username-existed.exception');
 const PasswordIncorrectException = require('../exception/auth/password-incorrect.exception');
 const RegisterFailedExistedException = require('../exception/auth/register-failed.exception');
 const InvalidRefreshTokenException = require('../exception/auth/invalid-refresh-token.exception');
@@ -13,12 +12,14 @@ const { LoginRequest } = require('../request/login.request');
 const { RefreshTokenRequest } = require('../request/refresh-token.request');
 const { httpResponse } = require('../response/http.response');
 const { exceptionResponse } = require('../response/exception.response');
+const UsernameNotExistedException = require('../exception/auth/Username-not-existed.exception');
+const UsernameExistedException = require('../exception/auth/username-existed.exception');
 
 const createNewUser = async (req, res) => {
     const user = req.body;
     const userExisted = await usersRepository.getUserByUsername(user.username);
     if (userExisted) {
-        return exceptionResponse(res, new usernameExistedException());
+        return exceptionResponse(res, new UsernameExistedException());
     }
     const hashPass = await hashPassword(user.password);
     const newUser = await usersRepository.createNewUser({
@@ -41,7 +42,7 @@ const loginUser = async (req, res) => {
     const loginRequest = new LoginRequest(req.body);
     const user = await usersRepository.getUserByUsername(loginRequest.username);
     if (!user) {
-        return exceptionResponse(res, new usernameExistedException());
+        return exceptionResponse(res, new UsernameNotExistedException());
     }
     const check = await bcrypt.compareSync(loginRequest.password, user.password);
     if (!check) {

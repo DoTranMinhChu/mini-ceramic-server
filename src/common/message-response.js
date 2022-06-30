@@ -27,5 +27,6 @@ module.exports = MessageResponse = {
   [StatusCode.ORDER_PAID]: 'Order paid.',
   [StatusCode.UNABLE_CHANGE_STATUS_ORDER_SHIPPED]: 'Unable to change the status of the order shipped.',
   [StatusCode.UNABLE_CHANGE_STATUS_ORDER_DONE]: 'Unable to change the status of the order done.',
-  [StatusCode.CHANGE_STATUS_ORDER_FAILED] : 'Change the status order failed.'
+  [StatusCode.CHANGE_STATUS_ORDER_FAILED] : 'Change the status order failed.',
+  [StatusCode.USERNAME_NOT_EXISTED]: 'Username not existed.'
 };
